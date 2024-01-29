@@ -200,7 +200,7 @@ class MyConvertedCode extends TerraformStack {
       allocatedStorage: 500,
       autoMinorVersionUpgrade: false,
       backupRetentionPeriod: 7,
-      customIamInstanceProfile: "AWSRDSCustomSQLServerInstanceRole",
+      customIamInstanceProfile: "AWSRDSCustomSQLServerInstanceProfile",
       dbSubnetGroupName: dbSubnetGroupName,
       engine: Token.asString(customSqlserver.engine),
       engineVersion: Token.asString(customSqlserver.engineVersion),
@@ -695,4 +695,4 @@ Using `terraform import`, import DB Instances using the `identifier`. For exampl
 % terraform import aws_db_instance.default mydb-rds-instance
 ```
 
-<!-- cache-key: cdktf-0.20.1 input-738cfe0ac659c0398cfe29ca012c97002ce9cbe965488f84d5f8c45e623be0fd -->
+<!-- cache-key: cdktf-0.20.1 input-cab3e3603d3a8a39952c2fa7c18fbefc9996a3a2251a010e73d35718c62c0144 -->
