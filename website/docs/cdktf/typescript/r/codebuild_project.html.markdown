@@ -380,7 +380,7 @@ This block is only valid when the `type` is `CODECOMMIT`, `GITHUB` or `GITHUB_EN
 
 ### source
 
-* `buildspec` - (Optional) Build specification to use for this build project's related builds. This must be set when `type` is `NO_SOURCE`.
+* `buildspec` - (Optional) Build specification to use for this build project's related builds. This must be set when `type` is `NO_SOURCE`. Also, if a non-default buildspec file name or file path aside from the root is used, it must be specified.
 * `gitCloneDepth` - (Optional) Truncate git history to this many commits. Use `0` for a `Full` checkout which you need to run commands like `git branch --show-current`. See [AWS CodePipeline User Guide: Tutorial: Use full clone with a GitHub pipeline source](https://docs.aws.amazon.com/codepipeline/latest/userguide/tutorials-github-gitclone.html) for details.
 * `gitSubmodulesConfig` - (Optional) Configuration block. Detailed below.
 * `insecureSsl` - (Optional) Ignore SSL warnings when connecting to source control.
@@ -444,4 +444,4 @@ Using `terraform import`, import CodeBuild Project using the `name`. For example
 % terraform import aws_codebuild_project.name project-name
 ```
 
-<!-- cache-key: cdktf-0.20.1 input-649a67d6ab00b1b53b75762fbfff89f5c85947aa2e52d3d5fcf8e6a2aad99189 -->
+<!-- cache-key: cdktf-0.20.1 input-0573609504d83de582d650ff90f7051937a3f883f4dbaae34a29b2cfcd1e08ec -->
