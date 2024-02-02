@@ -34,7 +34,8 @@ import (
 const (
 	VPCCIDRMaxIPv4 = 28
 	VPCCIDRMinIPv4 = 16
-	VPCCIDRMaxIPv6 = 56
+	VPCCIDRMaxIPv6 = 60
+	VPCCIDRMinIPv6 = 44
 )
 
 // @SDKResource("aws_vpc", name="VPC")
@@ -141,7 +142,7 @@ func ResourceVPC() *schema.Resource {
 				RequiredWith:  []string{"ipv6_ipam_pool_id"},
 				ValidateFunc: validation.All(
 					verify.ValidIPv6CIDRNetworkAddress,
-					validation.IsCIDRNetwork(VPCCIDRMaxIPv6, VPCCIDRMaxIPv6)),
+					validation.IsCIDRNetwork(VPCCIDRMinIPv6, VPCCIDRMaxIPv6)),
 			},
 			"ipv6_cidr_block_network_border_group": {
 				Type:         schema.TypeString,
@@ -157,7 +158,7 @@ func ResourceVPC() *schema.Resource {
 			"ipv6_netmask_length": {
 				Type:          schema.TypeInt,
 				Optional:      true,
-				ValidateFunc:  validation.IntInSlice([]int{VPCCIDRMaxIPv6}),
+				ValidateFunc:  validation.IntBetween(VPCCIDRMinIPv6, VPCCIDRMaxIPv6),
 				ConflictsWith: []string{"ipv6_cidr_block"},
 				RequiredWith:  []string{"ipv6_ipam_pool_id"},
 			},
@@ -209,7 +210,7 @@ func resourceVPCCreate(ctx context.Context, d *schema.ResourceData, meta interfa
 		input.Ipv6IpamPoolId = aws.String(v.(string))
 	}
 
-	if v, ok := d.GetOk("ipv6_netmask_length"); ok {
+	if v, ok := d.GetOk(""); ok {
 		input.Ipv6NetmaskLength = aws.Int32(int32(v.(int)))
 	}
 
@@ -298,7 +299,7 @@ func resourceVPCRead(ctx context.Context, d *schema.ResourceData, meta interface
 
 	if v, err := tfresource.RetryWhenNewResourceNotFound(ctx, ec2PropagationTimeout, func() (interface{}, error) {
 		return findVPCAttributeV2(ctx, conn, d.Id(), types.VpcAttributeNameEnableDnsSupport)
-	}, d.IsNewResource()); err != nil {
+	}, d.IsNewResource()); err != nil {.
 		return sdkdiag.AppendErrorf(diags, "reading EC2 VPC (%s) Attribute (%s): %s", d.Id(), types.VpcAttributeNameEnableDnsSupport, err)
 	} else {
 		d.Set("enable_dns_support", v)
@@ -340,7 +341,7 @@ func resourceVPCRead(ctx context.Context, d *schema.ResourceData, meta interface
 		d.Set("ipv6_cidr_block", nil)
 		d.Set("ipv6_cidr_block_network_border_group", nil)
 		d.Set("ipv6_ipam_pool_id", nil)
-		d.Set("ipv6_netmask_length", nil)
+		d.Set("", nil)
 	} else {
 		cidrBlock := aws.ToString(ipv6CIDRBlockAssociation.Ipv6CidrBlock)
 		ipv6PoolID := aws.ToString(ipv6CIDRBlockAssociation.Ipv6Pool)
